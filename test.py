@@ -1,6 +1,7 @@
+import os
+import glob
 import pytesseract
 from PIL import Image
-# import module
 from pdf2image import convert_from_path
  
  # ===== 轉 pdf to png =====#
@@ -21,9 +22,16 @@ def image_to_txt(path_list, file_name):
 
   for page in path_list:
       img = Image.open(page)
-      text = pytesseract.image_to_string(img, lang='jpn_vert', config='--psm 3 -c preserve_interword_spaces=1')
+      text = pytesseract.image_to_string(img, lang='jpn_vert', 
+      config='--psm 3 -c preserve_interword_spaces=1')
       file.write(text)
+      file.write('\r\n')
+
+def get_file_name(dir_name):
+  return glob.glob(os.path.join(dir_name, "*.jpg"))
 
 # page_list = pdf_to_png('messageImage_1679045745113.pdf')
-page_list = ['messageImage_1679045745113.jpg']
-image_to_txt(page_list, "output2.txt")
+page_list = get_file_name("novel")
+print(page_list)
+image_to_txt(page_list, "output.txt")
+print("finish")
